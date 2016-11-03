@@ -1,0 +1,146 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="viewer-scroll">
+  <template>
+    <style>
+      :host {
+        display: flex;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        overflow: scroll;
+      };
+
+      ::content viewer-views {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      :host([horizontal]) ::content viewer-views {
+        flex-direction: row;
+      }
+    </style>
+   <content></content>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'viewer-scroll',
+
+      properties: {
+
+        transition: {
+          type: Object,
+          value: function () {
+            return {};
+          }
+        },
+
+        view: {
+          type: Number,
+          notify: true,
+          observer: '_viewChanged'
+        },
+
+        views: Object,
+
+        viewsNodes: {
+          type: Array,
+          value: function () {
+            return [];
+          }
+        },
+
+        wheel: {
+          type: Boolean,
+          value: false
+        }
+
+      },
+
+      listeners: {
+        'transition-end': '_transitionEnd',
+      },
+
+      ready: function () {
+        this._getViews();
+      },
+
+      attached: function () {
+        this.set('transition', this.queryEffectiveChildren('[transition]'));
+        //transition.views = this.views;
+      },
+
+      next: function () {
+        if (this.wheel || this.view < this.viewsLength - 1) {
+          this.set('view', (Number(this.view) + 1) % this.viewsLength);
+        }
+      },
+
+      prev: function () {
+        if (this.wheel || this.view > 0) {
+          this.set('view', (Number(this.view) - 1 + this.viewsLength) % this.viewsLength);
+        }
+      },
+
+      goTo: function (view) {
+        this.set('view', view);
+      },
+
+      _getViews: function () {
+        if (typeof (this.views) === 'string') {
+          var host = this._searchRoot(this);
+          this.set('viewsNodes', host.querySelector(this.views).children);
+        } else if (typeof (this.views) === 'Object') {
+          this.set('viewsNodes', this.views);
+        } else {
+          this.set('viewsNodes', this.queryEffectiveChildren('viewer-views').children);
+        }
+        this.set('view', 0);
+        this.set('viewsLength', this.viewsNodes.length);
+      },
+
+
+
+      _removeSelected: function (node) {
+        node.classList.remove('selected');
+      },
+
+      _searchRoot: function (node) {
+        if (!node.parentNode) {
+          return node;
+        } else {
+          return this._searchRoot(node.parentNode);
+        }
+      },
+
+      _transitionEnd: function (e){
+        e.stopPropagation();
+        this._removeSelected(e.detail.oldNode);
+      },
+
+      _viewChanged: function (newView, oldView) {
+        this.viewsNodes[newView].classList.add('selected');
+        if (oldView !== undefined && !!this.transition) {
+          var _direction = 'normal'
+          var I = (newView - oldView);
+          var l = this.viewsLength - 1;
+
+          if ((I > 0 && newView === l && oldView === 0) || (I < 0 && !(newView === 0 && oldView === l))) {
+            _direction = 'reverse';
+          }
+
+          this.transition.move(this.viewsNodes[newView], this.viewsNodes[oldView], _direction);
+        }
+        if (!this.transition) {
+          this._removeSelected(this.viewsNodes[oldView]);
+        }
+      }
+
+    });
+  </script>
+</dom-module>

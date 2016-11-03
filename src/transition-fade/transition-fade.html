@@ -1,0 +1,70 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../web-animations/web-animations.html">
+
+<dom-module id="transition-fade">
+  <template>
+    
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'transition-fade',
+
+      properties: {
+        
+      },
+
+      _createAnimation: function (node, keyframes, animConfig, cb) {
+        var effect = new KeyframeEffect (node, keyframes, animConfig);
+        var anim = new Animation(effect, node.ownerDocument.timeline);
+        if(cb) {
+          anim.onfinish = cb;
+        }
+        return anim;
+      },
+
+      move: function (newNode, oldNode, direction) {
+        
+        var entryAnimation = [
+          { opacity: 0 },
+          { opacity: 1 }
+        ];
+
+        var entryConfig = { 
+          duration: 500, 
+          easing: 'ease-in-out',
+          fill: 'forwards',
+          delay: -1,
+          direction: direction
+        }
+
+        var exitAnimation = [
+          { opacity: 1 },
+          { opacity: 0 }
+        ];
+
+        var exitConfig = { 
+          duration: 500, 
+          easing: 'ease-in-out',
+          fill: 'forwards',
+          delay: 0,
+          direction: direction 
+        }
+
+        if (direction === 'reverse'){
+          var aux = exitAnimation;
+          exitAnimation = entryAnimation;
+          entryAnimation = aux;
+        }
+
+        this._createAnimation(newNode, entryAnimation, entryConfig).play();
+        this._createAnimation(oldNode, exitAnimation, exitConfig, function() {
+          this.fire('transition-end', {newNode: newNode, oldNode: oldNode});
+        }.bind(this)).play();
+
+      }
+
+    });
+  </script>
+</dom-module>

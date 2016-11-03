@@ -1,0 +1,70 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../web-animations/web-animations.html">
+
+<dom-module id="transition-slide-horizontal">
+  <template>
+    
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'transition-slide-horizontal',
+
+      properties: {
+        
+      },
+
+      _createAnimation: function (node, keyframes, animConfig, cb) {
+        var effect = new KeyframeEffect (node, keyframes, animConfig);
+        var anim = new Animation(effect, node.ownerDocument.timeline);
+        if(cb){
+          anim.onfinish = cb;
+        }
+        return anim;
+      },
+
+      move: function (newNode, oldNode, direction) {
+        
+        var entryAnimation = [
+          { transform: 'translateX(100%)' },
+          { transform: 'translateX(0%)' }
+        ];
+
+        var entryConfig = { 
+          duration: 500, 
+          easing: 'ease-in-out',
+          fill: 'forwards',
+          delay: 0,
+          direction: direction
+        }
+
+        var exitAnimation = [
+          { transform: 'translateX(0%)' },
+          { transform: 'translateX(-100%)'}
+        ];
+
+        var exitConfig = { 
+          duration: 500, 
+          easing: 'ease-in-out',
+          fill: 'forwards',
+          delay: 0,
+          direction: direction 
+        }
+
+        if (direction === 'reverse'){
+          var aux = exitAnimation;
+          exitAnimation = entryAnimation;
+          entryAnimation = aux;
+        }
+
+        this._createAnimation(newNode, entryAnimation, entryConfig).play();
+        this._createAnimation(oldNode, exitAnimation, exitConfig, function() {
+          this.fire('transition-end', {newNode: newNode, oldNode: oldNode});
+        }.bind(this)).play();
+
+      }
+
+    });
+  </script>
+</dom-module>

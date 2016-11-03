@@ -1,0 +1,64 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../viewer-sequence/viewer-sequence.html">
+
+
+
+<link rel="import" href="../transition-slide-vertical/transition-slide-vertical.html">
+<link rel="import" href="../transition-slide-horizontal/transition-slide-horizontal.html">
+<link rel="import" href="../transition-fade/transition-fade.html">
+<link rel="import" href="../transition-flip/transition-flip.html">
+
+
+
+
+<link rel="import" href="../my-nav/my-nav.html">
+
+<dom-module id="pruebas-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+
+    <viewer-sequence views="#myviews"> 
+      <content select="[transition]"></content>
+      <viewer-views id="myviews" views>
+        <div id="a" style="background:darkcyan;">1 </div>
+        <div id="b" style="background:firebrick;">2</div>
+        <div style="background:khaki;">3</div>
+        <div style="background:cadetblue;">4</div>
+        <div style="background:coral;">5</div>
+        <div style="background:darkslategray;">6</div>
+      </viewer-views>
+    </viewer-sequence>
+    
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'pruebas-app',
+
+      properties: {
+        // disruptivo
+      },
+
+      listeners: {
+        'transition-end': 'a',
+      },
+
+      a: function (e){
+        console.log('transition-end sqdf', e);
+      },
+
+      ready: function() {
+
+      }
+
+    });
+  </script>
+</dom-module>

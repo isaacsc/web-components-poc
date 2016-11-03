@@ -1,0 +1,166 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>pruebas</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script>
+      /* this script must run before Polymer is imported */
+      window.Polymer = {
+        dom: 'shadow',
+        lazyRegister: true
+      };
+    </script>
+    <link rel="import" href="/bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+    <link rel="import" href="/bower_components/iron-icons/iron-icons.html">
+    <link rel="import" href="/bower_components/paper-fab/paper-fab.html">
+
+    <link rel="import" href="/src/pruebas-app/pruebas-app.html">
+
+    <link rel="import" href="/src/viewer-sequence/viewer-sequence.html">
+    <link rel="import" href="/src/viewer-scroll/viewer-scroll.html">
+
+    <link rel="import" href="/src/transition-slide-vertical/transition-slide-vertical.html">
+    <link rel="import" href="/src/transition-slide-horizontal/transition-slide-horizontal.html">
+    <link rel="import" href="/src/transition-fade/transition-fade.html">
+    <link rel="import" href="/src/transition-flip/transition-flip.html">
+
+    <style is="custom-style" include="iron-flex">
+      .wrapper {
+        position: relative;
+        height: 400px;
+        width: 400px;
+        margin: 60px 32px;
+      }
+
+      .wrapper h2 {
+        position: absolute;
+        z-index: 1;
+        top: -60px;
+      }
+
+      .controls {
+        position: absolute;
+        bottom: 16px;
+        right: 16px;
+      }
+
+      paper-fab {
+        margin: 8px;
+        color: #000;
+        --paper-fab-background: #fff;
+      }
+
+      [row] h1 {
+        margin: 250px;
+      }
+
+    </style>
+  </head>
+  <body class="layout horizontal wrap">
+
+    <!-- <div class="wrapper">
+      <h2>Slide horizontal</h2>
+      <viewer-sequence wheel>
+          <transition-slide-horizontal transition></transition-slide-horizontal>
+          <viewer-views views>
+            <div id="a" style="background: linear-gradient(to right, rgba(245,54,102,1) 0%, rgba(140,93,240,1) 50%, rgba(0,74,184,1) 100%);">1 </div>
+            <div id="b" style="background:firebrick;">2</div>
+            <div style="background:khaki;">3</div>
+            <div style="background:cadetblue;">4</div>
+            <div style="background:coral;">5</div>
+            <div style="background:darkslategray;">6</div>
+          </viewer-views>
+        </viewer-sequence>
+      <div class="controls layout horizontal">
+        <paper-fab icon="remove" onclick="prev(event)"></paper-fab>
+        <paper-fab icon="add" onclick="next(event)"></paper-fab>
+      </div>
+    </div>
+
+    <div class="wrapper">
+      <h2>Slide vertical</h2>
+      <viewer-sequence wheel>
+          <transition-slide-vertical transition></transition-slide-vertical>
+          <viewer-views views>
+            <div id="a" style="background: linear-gradient(to right, rgba(245,54,102,1) 0%, rgba(140,93,240,1) 50%, rgba(0,74,184,1) 100%);">1 </div>
+            <div id="b" style="background:firebrick;">2</div>
+            <div style="background:khaki;">3</div>
+            <div style="background:cadetblue;">4</div>
+            <div style="background:coral;">5</div>
+            <div style="background:darkslategray;">6</div>
+          </viewer-views>
+        </viewer-sequence>
+      <div class="controls layout horizontal">
+        <paper-fab icon="remove" onclick="prev(event)"></paper-fab>
+        <paper-fab icon="add" onclick="next(event)"></paper-fab>
+      </div>
+    </div>
+
+    <div class="wrapper">
+      <h2>Fade</h2>
+      <viewer-sequence wheel>
+          <transition-fade transition></transition-fade>
+          <viewer-views views>
+            <div id="a" style="background: linear-gradient(to right, rgba(245,54,102,1) 0%, rgba(140,93,240,1) 50%, rgba(0,74,184,1) 100%);">1 </div>
+            <div id="b" style="background:firebrick;">2</div>
+            <div style="background:khaki;">3</div>
+            <div style="background:cadetblue;">4</div>
+            <div style="background:coral;">5</div>
+            <div style="background:darkslategray;">6</div>
+          </viewer-views>
+        </viewer-sequence>
+      <div class="controls layout horizontal">
+        <paper-fab icon="remove" onclick="prev(event)"></paper-fab>
+        <paper-fab icon="add" onclick="next(event)"></paper-fab>
+      </div>
+    </div>
+
+    <div class="wrapper">
+      <h2>Flip</h2>
+      <viewer-sequence wheel>
+          <transition-flip transition></transition-flip>
+          <viewer-views views>
+            <div id="a" style="background: linear-gradient(to right, rgba(245,54,102,1) 0%, rgba(140,93,240,1) 50%, rgba(0,74,184,1) 100%);">1 </div>
+            <div id="b" style="background:firebrick;">2</div>
+            <div style="background:khaki;">3</div>
+            <div style="background:cadetblue;">4</div>
+            <div style="background:coral;">5</div>
+            <div style="background:darkslategray;">6</div>
+          </viewer-views>
+        </viewer-sequence>
+      <div class="controls layout horizontal">
+        <paper-fab icon="remove" onclick="prev(event)"></paper-fab>
+        <paper-fab icon="add" onclick="next(event)"></paper-fab>
+      </div>
+    </div> -->
+
+    <viewer-scroll>
+      <viewer-views views>
+        <div row><h1>content 1</h1></div>
+        <div row><h1>content 2</h1></div>
+        <div row><h1>content 3</h1></div>
+        <div row><h1>content 4</h1></div>
+        <div row><h1>content 5</h1></div>
+        <div row><h1>content 6</h1></div>
+        <div row><h1>content 7</h1></div>
+      </viewer-views>
+    </viewer-scroll>
+
+    <script>
+      var nav = document.querySelector('#nav');
+
+      function next(e) {
+        e.target.parentNode.parentNode.querySelector('viewer-sequence').next();
+      }
+
+      function prev(e) {
+        e.target.parentNode.parentNode.querySelector('viewer-sequence').prev();
+      }
+    </script>
+
+  </body>
+</html>

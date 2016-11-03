@@ -1,0 +1,157 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="my-nav">
+  <template>
+    <style>
+      :host {
+        display: block;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        overflow: hidden;
+      }
+      :host ::content * {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        display: none;
+        animation-duration: 1s;
+        animation-fill-mode: both;
+
+        color: white;
+        font-size: 160px;
+        justify-content: center;
+        align-items: center;
+      };
+
+      :host ::content *.selected{
+        display: flex;
+      }
+
+      :host[transition=slideVertical] ::content *.exit{
+        animation-name: slideOutV;
+      }
+      :host[transition="slideVertical"] ::content *.in{
+        animation-name: slideInV;
+      }
+
+      :host[transition="slideHorizontal"] ::content *.exit{
+        animation-name: slideOutH;
+      }
+      :host[transition="slideHorizontal"] ::content *.in{
+        animation-name: slideInH;
+      }
+
+      @keyframes slideInH {
+        0% {
+          transform: translate(100%, 0);
+           
+        }
+        100% {
+          transform: translate(0, 0);
+           
+        }
+      }
+
+      @keyframes slideOutH {
+        0% {
+          transform: translate(0, 0);
+           
+        }
+        100% {
+          transform: translate(-100%, 0);
+           
+        }
+      }
+
+      @keyframes slideInV {
+        0% {
+          transform: translate(0, 100%);
+          
+        }
+        100% {
+          transform: translate(0, 0);
+          
+        }
+      }
+
+      @keyframes slideOutV {
+        0% {
+          transform: translate(0, 0);
+          
+        }
+        100% {
+          transform: translate(0, -100%);
+          
+        }
+      }
+    </style>
+    <content></content>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'my-nav',
+
+      properties: {
+
+        view: {
+          type: Number,
+          value: 0,
+          observer: 'goto'
+        },
+
+        views: Array,
+
+        viewsLength: {
+          type: Number,
+          value: 0,
+          notify: true
+        }
+
+      },
+
+      listeners: {
+        'animationend' : 'animationend'
+      },
+
+      animationend: function (e) {
+        console.log('animationend',e.target.classList.contains('exit'));
+        e.target.classList.remove('in');
+        if(e.target.classList.contains('exit')){
+          e.target.classList.remove('exit', 'selected');
+        }
+      },
+
+      ready: function () {
+        console.log('ready vertical');
+        this.set('views', Polymer.dom(this).children);
+        this.set('viewsLength', this.views.length);
+        this.views[this.view].classList.add('selected');
+      },
+
+      goto: function (newVal, oldVal) {
+        console.log('goto', newVal, oldVal);
+        if(this.viewsLength){
+          this.views[newVal].classList.add('selected', 'in');
+          this.views[oldVal].classList.add('exit');
+        }
+          
+      },
+
+      next: function () {
+        this.set('view', (Number(this.view) + 1) % this.viewsLength);
+      },
+
+      prev: function () {
+        this.set('view', (Number(this.view) - 1 + this.viewsLength) % this.viewsLength)
+      }
+
+    });
+  </script>
+</dom-module>

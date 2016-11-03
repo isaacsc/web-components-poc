@@ -1,0 +1,122 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="transition-horizontal">
+  <template>
+    <style>
+      :host {
+        display: block;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        overflow: hidden;
+      }
+      :host ::content * {
+        background: azure;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        display: none;
+        animation-duration: 1s;
+        animation-fill-mode: both;
+
+        color: white;
+        font-size: 160px;
+        justify-content: center;
+        align-items: center;
+      };
+
+      :host ::content *.selected{
+        display: flex;
+        
+      }
+
+      :host ::content *.exit{
+        animation-name: slideOutH;
+      }
+      :host ::content *.in{
+        animation-name: slideInH;
+      }
+
+      @keyframes slideInH {
+        0% {
+          transform: translate(100%, 0);
+           
+        }
+        100% {
+          transform: translate(0, 0);
+           
+        }
+      }
+
+      @keyframes slideOutH {
+        0% {
+          transform: translate(0, 0);
+           
+        }
+        100% {
+          transform: translate(-100%, 0);
+           
+        }
+      }
+    </style>
+    <content></content>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'transition-horizontal',
+
+      properties: {
+
+        view: {
+          type: Number,
+          value: 0,
+          observer: 'goto'
+        },
+
+        views: Array,
+
+        viewsLength: {
+          type: Number,
+          value: 0,
+          notify: true
+        }
+
+      },
+
+      listeners: {
+        'animationend' : 'a'
+      },
+
+      a: function (e) {
+        console.log('animationend',e.target.classList.contains('exit'));
+        e.target.classList.remove('in');
+        if(e.target.classList.contains('exit')){
+          e.target.classList.remove('exit', 'selected');
+        }
+      },
+
+      ready: function () {
+        console.log('ready horizontal');
+        this.set('views', Polymer.dom(this).children);
+        this.set('viewsLength', this.views.length);
+        this.views[this.view].classList.add('selected');
+      },
+
+      goto: function (newVal, oldVal) {
+        console.log('goto', newVal, oldVal);
+        if(this.viewsLength){
+          this.views[newVal].classList.add('selected', 'in');
+          this.views[oldVal].classList.add('exit');
+        }
+          
+      }
+
+    });
+  </script>
+</dom-module>

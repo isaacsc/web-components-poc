@@ -1,0 +1,42 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="nav-sequence">
+  <template>
+   <content></content>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'nav-sequence',
+
+      properties: {
+        
+        view: {
+          type: Number,
+          value: 0,
+          notify: true
+        },
+
+        viewsLength: {
+          type: Number,
+          value: 0
+        }
+
+      },
+
+      ready: function () {
+        
+      },
+
+      next: function () {
+        this.set('view', (Number(this.view) + 1) % this.viewsLength);
+      },
+
+      prev: function () {
+        this.set('view', (Number(this.view) - 1 + this.viewsLength) % this.viewsLength)
+      }
+
+    });
+  </script>
+</dom-module>
